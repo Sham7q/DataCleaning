@@ -68,9 +68,10 @@ SET PropertySplitCity = SUBSTRING(PropertyAddress,CHARINDEX(',',PropertyAddress)
 -----------------------------------------------------------
 -- Breaking it out OwnerAddress in to three 
 
-SELECT OwnerAddress,PARSENAME(REPLACE(OwnerAddress,',','.'),3) AS OwnerStreet , 
-PARSENAME(REPLACE(OwnerAddress,',','.'),2) AS OwnerCity , 
-PARSENAME(REPLACE(OwnerAddress,',','.'),1) AS OwnerState
+SELECT OwnerAddress,
+,PARSENAME(REPLACE(OwnerAddress,',','.'),3) AS OwnerStreet 
+,PARSENAME(REPLACE(OwnerAddress,',','.'),2) AS OwnerCity  
+,PARSENAME(REPLACE(OwnerAddress,',','.'),1) AS OwnerState
 FROM PortfolioProject.dbo.NashvilleHousing
 
 ALTER TABLE NashvilleHousing
@@ -108,9 +109,7 @@ SET SoldAsVacant =
 
 WITH RowNumCTE AS(
 SELECT *, 
-	ROW_NUMBER() OVER (PARTITION BY 
-					ParcelID, PropertyAddress, SalePrice,SaleDate,LegalReference
-					ORDER BY UniqueID) row_num
+	ROW_NUMBER() OVER (PARTITION BY ParcelID, PropertyAddress, SalePrice,SaleDate,LegalReference ORDER BY UniqueID) row_num
 FROM PortfolioProject.dbo.NashvilleHousing
 )
 DELETE  
